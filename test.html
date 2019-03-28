@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			body{
+				margin: 0;
+				padding: 0;
+			}
+			#drag{
+				position: absolute;
+				background: #ccc;
+			}
+			#title{
+				height: 40px;
+				line-height: 40px;
+				background: #333;
+				margin: 0;
+				padding: 0;
+				color: #fff;
+				text-align: center;
+				cursor: pointer;
+			}
+			#drag h1{
+				padding: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="drag">
+			<p id="title">标题</p>
+			<h1>Hello World</h1>
+		</div>
+		<script>
+			var isDraging = false;  //  是否可拖拽的标记
+			var mouseOffsetX = 0;   //  偏移
+        	var mouseOffsetY = 0;
+			document.onmousedown = function(e){
+				var e = e || window.event;
+	            mouseOffsetX = e.pageX - document.getElementById('drag').offsetLeft;  //鼠标位置相对于拖动元素的X轴距离
+	            mouseOffsetY = e.pageY - document.getElementById('drag').offsetTop;   //鼠标位置相对于拖动元素的Y轴距离
+				isDraging = true;				
+			}
+			document.onmouseup = function(){
+	            isDraging = false; 
+	       }
+			document.onmousemove = function( e ){
+				if(isDraging){
+					var moveLeft = e.pageX - mouseOffsetX;  //鼠标按下位置移动后的横向距离-鼠标位置相对于拖动元素的X轴距离 = 拖动元素的X轴距离
+					var moveTop = e.pageY - mouseOffsetY;   //鼠标按下位置移动后的纵向距离-鼠标位置相对于拖动元素的Y轴距离 = 拖动元素的Y轴距离					
+					
+					//范围控制
+					var maxX = document.documentElement.clientWidth -  document.getElementById('drag').offsetWidth -10; //不紧挨着右侧
+	    			var maxY = document.documentElement.clientHeight - document.getElementById('drag').offsetHeight;
+					var left = Math.min( Math.max(moveLeft,0) , maxX) +  "px";
+					var top  = Math.min( Math.max(moveTop, 0) , maxY) + "px";
+	    		
+					document.getElementById('drag').style.left = left;  
+					document.getElementById('drag').style.top = top;   
+				}
+			}
+
+		</script>
+	</body>
+</html>
